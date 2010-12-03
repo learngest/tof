@@ -106,10 +106,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'email_auth',
-#    'dashboard',
-#    'learning',
-#    'coaching',
-#    'testing',
+    'testing',
+    'users',
 )
 
 AUTHENTICATION_BACKENDS = (
