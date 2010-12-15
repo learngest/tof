@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
 from email_auth.views import user_logged_in
-from toftesting.models import Granule, Question, Reponse
+from testing.models import Granule, Question, Reponse
 
 from listes import *
 
