@@ -37,7 +37,7 @@ class Client(models.Model):
     def __unicode__(self):
         return self.nom
 
-class SessionTest(models.Model):
+class SessionExam(models.Model):
     """
     Une session d'examen
     """
@@ -66,32 +66,32 @@ class Section(models.Model):
     """
     Une section dans une session de test
     """
-    sessiontest = models.ForeignKey(SessionTest,
+    sessionexam = models.ForeignKey(SessionExam,
             help_text=_('Session to which this section belongs, required.'))
     titre = models.CharField(max_length=60, unique=True,
         help_text=_("Section title, required."))
     rang = models.IntegerField(_("rank"))
     
     class Meta:
-        ordering = ['sessiontest','rang']
+        ordering = ['sessionexam','rang']
 
     def __unicode__(self):
-        return u'%s - %s' % (self.sessiontest,self.titre)
+        return u'%s - %s' % (self.sessionexam,self.titre)
 
 class Inscrit(models.Model):
     """
     Un user inscrit dans une session d'examen
     """
-    sessiontest = models.ForeignKey(SessionTest,
+    sessionexam = models.ForeignKey(SessionExam,
             help_text=_('Session, required.'))
     user = models.ForeignKey(User,
             help_text=_('User, required.'))
     
     class Meta:
-        ordering = ['sessiontest','user']
+        ordering = ['sessionexam','user']
 
     def __unicode__(self):
-        return u'%s - %s' % (self.sessiontest,self.user)
+        return u'%s - %s' % (self.sessionexam,self.user)
 
 class Contenu(models.Model):
     """
