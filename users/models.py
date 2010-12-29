@@ -109,8 +109,7 @@ class ContenuStd(Contenu):
     """
     Contenu de test standard
     """
-    granule = models.ForeignKey(Granule),
-        help_text=_('Granule, required.'))
+    granule = models.ForeignKey(Granule, help_text=_('Granule, required.'))
     nbq = models.IntegerField(_("Number of questions"))
 
     class Meta:
@@ -163,7 +162,7 @@ class ReponseCas(models.Model):
     signature = models.CharField(max_length=54)
 
     class Meta:
-        unique_together = (('utilisateur', 'cas'),)
+        unique_together = (('user', 'cas'),)
 
     def __unicode__(self):
         return u'%s - %s - %s' % (self.utilisateur.email, 
