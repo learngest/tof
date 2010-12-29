@@ -114,6 +114,7 @@ class ContenuStd(Contenu):
 
     class Meta:
         ordering = ['section','rang']
+        verbose_name_plural = _("Standard Contents")
 
     def __unicode__(self):
         return u'%s - %s' % (self.section, self.granule)
@@ -130,6 +131,7 @@ class ContenuCas(Contenu):
 
     class Meta:
         ordering = ['section','rang']
+        verbose_name_plural = _("Contents: Case Studies")
 
     def __unicode__(self):
         return u'%s - %s' % (self.section,self.titre)
