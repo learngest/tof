@@ -8,8 +8,7 @@ from django.conf import settings
 from django.contrib import admin
 #admin.autodiscover()
 
-import coaching.admin
-import learning.admin
+import users.admin
 import testing.admin
 
 # Base
@@ -28,7 +27,7 @@ urlpatterns += patterns('django.contrib.auth.views',
 
 # Applications
 urlpatterns += patterns('',
-    (r'^$', include('testing.urls')),
+#    (r'^$', include('testing.urls')),
     (r'^staff/', include(admin.site.urls)),
 )
 
