@@ -100,7 +100,8 @@ class Contenu(models.Model):
     section = models.ForeignKey(Section,
             help_text=_('Section, required.'))
     rang = models.IntegerField(_("rank"))
-    duree = models.IntegerField(_("Maximum duration, minutes. 0 if unlimited."))
+    duree = models.IntegerField(
+            help_text=_("Maximum duration, minutes. 0 if unlimited."))
 
     class Meta:
         abstract = True
