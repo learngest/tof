@@ -27,7 +27,7 @@ urlpatterns += patterns('django.contrib.auth.views',
 
 # Applications
 urlpatterns += patterns('',
-#    (r'^$', include('testing.urls')),
+    (r'^$', 'users.views.dashboard'),
     (r'^staff/', include(admin.site.urls)),
 )
 
