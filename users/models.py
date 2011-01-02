@@ -62,6 +62,10 @@ class SessionExam(models.Model):
     def __unicode__(self):
         return self.titre
 
+    @models.permalink
+    def get_absolute_url(self):
+        return('testing.views.sessionexam', [str(self.id)])
+
 class Section(models.Model):
     """
     Une section dans une session de test
