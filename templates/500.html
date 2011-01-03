@@ -1,0 +1,8 @@
+{% extends "base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+	<p>{% trans "Ooops - The action you requested caused an error. It will be reported to the site administrators." %}</p>
+    <p><a href="{% url users.views.dashboard %}">{% trans "Back to the starting page" %}</a></p>
+{% endblock content %}
+

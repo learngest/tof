@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<!-- vim: set fileencoding=utf8: -->
+{% load i18n %}
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+	<title>{% block title %}{% trans "Online Examination System" %}{% endblock %}</title>
+	{% block style %}
+	{% if client.style %}
+	<link rel="stylesheet" href="/static/media/css/{{ client.style }}" type="text/css" media="screen" title="Normal" />
+	<link rel="stylesheet" href="/static/media/css/print.css" type="text/css" media="print" />
+	{% else %}
+	<link rel="stylesheet" href="/static/media/css/base.css" type="text/css" media="screen" title="Normal" />
+	<link rel="stylesheet" href="/static/media/css/print.css" type="text/css" media="print" />
+	{% endif %}
+	{% endblock style %}
+	{% block extrahead %}{% endblock extrahead %}
+</head>
+
+<body>
+
+{% block header_toolbar %}<div id="header-toolbar-container">
+	<div id="header-toolbar">
+		{% block user_infos %}{% trans "Logged out" %}{% endblock %}
+	</div>
+</div>{% endblock header_toolbar %}
+
+{% block header %}<div id="header-container">
+	<div id="header">
+		<h1>Online Examination System</h1>
+		{% if client.nom %}<p>{{ client.nom }}</p>{% endif %}
+	</div>
+</div>{% endblock header %}
+
+{% block nav-global %}{% endblock %}
+{% block breadcrumbs %}{% endblock %}
+
+{% if messages %}
+<ul class="messagelist">{% for message in messages %}<li>{{ message }}</li>{% endfor %}</ul>
+{% endif %}
+
+<!-- Content -->
+<div id="content-container">
+	<div class="content">
+	{% block content_title %}{% if title %}<h1>{{ title|capfirst }}</h1>{% endif %}{% endblock %}
+	{% block content %}
+	{% endblock %}
+	</div>
+</div>
+<!-- END Content -->
+
+{% block footer %}<div id="footer-container">
+	<div id="footer">
+		<p>{% trans "© CFF 2010-" %}{% now "Y" %}</p>
+	</div>
+</div>{% endblock %}
+
+</body>
+</html>

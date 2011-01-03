@@ -1,0 +1,8 @@
+{% extends "base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+	<p>{% trans "Ooops - It seems the page you requested doesn't exist." %}</p>
+	<p><a href="{% url users.views.dashboard %}">{% trans "Back to the starting page" %}</a></p>
+{% endblock content %}
+
