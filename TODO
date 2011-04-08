@@ -1,0 +1,86 @@
+30/12/2010 Test de admin-tools
+30/12/2010 Import du contenu des tables testing à partir de master0910
+29/12/2010 Le syncdb est fait, les tables existent
+3/12/2010 La base a été créée (tof1011)
+
+Vues à prévoir
+==============
+
+Administration (/staff)
+-----------------------
+Création des sessions d'examen
+-session
+-sections
+-contenus
+
+On doit pouvoir le faire avec des inline, directement avec l'admin.
+
+Création des utilisateurs à partir de fichier :
+- création dans auth_user
+- rattachement à une session d'exam dans inscrit
+
+
+
+Sessions de tests (/testing)
+----------------------------
+
+Formulaire de login (idem masters)
+si le User est inscrit à plusieurs sessions : vue de choix de la session d'exam
+page d'accueil session d'exam (instructions, temps total disponible etc.) et
+bouton "Commencer"
+une page par section avec un tab par contenu ?
+
+Vérifier js actif sur toutes les pages
+
+Schéma de la base
+=================
+
+   .-------------.        .------------------.      .------------------.
+   |   Client    |        |   SessionExam    |      |       User       |
+   |-------------|        |------------------|      |------------------|
+   | nom         |        | titre            |      | from django.auth |
+   | style (css) |------->| client           |      '------------------'
+   | contacts    |        | ouverture (date) |                |
+   '-------------'        | fermeture (date) |                v
+                          | langue           |         .-------------.
+                          '------------------'         |   Inscrit   |
+                                 |  |                  |-------------|
+                                 |  '----------------->| sessionexam |
+                                 |                     | user        |
+                                 v                     '-------------'
+                          .-------------.
+                          |   Section   |
+                          |-------------|
+               .----------| sessionexam |------------.
+               |          | titre       |            |
+               |          | rang        |            |
+               |          '-------------'            |
+               v                                     |
+    .---------------------.                          |
+    |     ContenuCas      |                          v
+    |---------------------|                .-------------------.
+    | section             |                |    ContenuStd     |
+    | rang                |                |-------------------|
+    | duree (int, mn)     |                | section           |
+    | titre               |                | rang              |
+    | libel               |                | duree (int, mn)   |
+    | fichier             |                | granule           |
+    '---------------------'                | nbq               |
+                                           '-------------------'
+    .---------------.                                ^
+    |    Granule    |                                |
+    |---------------|                                |
+    | slug          |--------------------------------'
+    | titre(langue) |
+    '---------------'                  .----------.
+            |                          | Question |           .----------.
+            |                          |----------|           | Reponse  |
+            |                          | enonce   |           |----------|
+            .------------------------->| granule  |---------->| question |
+            |                          | langue   |           | points   |
+       .--------.                      | typq     |           | valeur   |
+       | Enonce |                      | libel    |           '----------'
+       |--------|                      '----------'
+       | libel  |
+       '--------'
+
