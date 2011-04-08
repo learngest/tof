@@ -25,6 +25,7 @@ except NameError:
     pass
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
+PROJECT_NAME = os.path.basename(PROJECT_PATH)
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -90,7 +91,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
 )
 
-ROOT_URLCONF = 'tof.urls'
+ROOT_URLCONF = '%s.urls' % PROJECT_NAME
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
