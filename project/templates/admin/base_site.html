@@ -1,0 +1,12 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block user_infos %}
+<p>{{ user }}</p>
+<p><a class="logout" href="{% url email_auth.views.logout %}">{% trans "Logout" %}</a></p>
+{% endblock %}
+
+{% block breadcrumbs %}<div id="breadcrumb">
+	{% if title %}{{ title }}{% endif %}
+</div>{% endblock %}
+
