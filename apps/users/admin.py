@@ -3,11 +3,8 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from django.contrib.auth.models import User
 from users.models import Client, SessionExam, Section, Inscrit, ContenuStd, ContenuCas
 from testing.models import Granule
-
-admin.site.register(User)
 
 class ClientAdmin(admin.ModelAdmin):
     search_fields = ('nom',)
@@ -39,6 +36,7 @@ admin.site.register(Section, SectionAdmin)
 class InscritAdmin(admin.ModelAdmin):
     search_fields = ('sessionexam',)
     list_filter = ('sessionexam',)
+    ordering = ['sessionexam',]
 admin.site.register(Inscrit, InscritAdmin)   
 
 class ContenuStdAdmin(admin.ModelAdmin):

@@ -17,6 +17,9 @@
 	{% endblock style %}
 	<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% load adminmedia %}{% admin_media_prefix %}css/base.css{% endblock %}" />
 	{% block extrastyle %}{% endblock extrastyle %}
+	<script type="text/javascript">
+		window.__admin_media_prefix__ = "{% filter escapejs %}{% admin_media_prefix %}{% endfilter %}";
+	</script>	
 	{% block extrahead %}{% endblock %}
 </head>
 

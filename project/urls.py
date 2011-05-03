@@ -6,7 +6,7 @@ from django.conf.urls.defaults import *
 from django.conf import settings
 
 from django.contrib import admin
-#admin.autodiscover()
+admin.autodiscover()
 
 import users.admin
 import testing.admin
