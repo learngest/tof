@@ -66,6 +66,9 @@ class SessionExam(models.Model):
     def get_absolute_url(self):
         return('testing.views.sessionexam', [str(self.id)])
 
+    def is_open(self):
+        return(datetime.datetime.now() >= self.ouverture)
+
 class Section(models.Model):
     """
     Une section dans une session de test

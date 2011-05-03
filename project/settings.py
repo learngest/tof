@@ -33,6 +33,7 @@ PROJECT_NAME = os.path.basename(PROJECT_PATH)
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
 TIME_ZONE = 'Europe/Paris'
+DATETIME_FORMAT = "Y-m-d H:i:s"
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html

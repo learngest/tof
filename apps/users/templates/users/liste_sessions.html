@@ -1,0 +1,26 @@
+{% extends "base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2>{% trans "Available exam sessions" %}</h2>
+<table class="tabexam">
+	<thead>
+		<tr><th>{% trans "Title" %}</th><th>{% trans "Date open" %}</th><th>{% trans "Date closed" %}</th></tr>
+	</thead>
+	<tfoot>
+	</tfoot>
+	<tbody>
+		{% for exam in sessions %}
+		<tr>
+			<td width="50%">{% if exam.is_open %}
+				<a href="{{ exam.get_absolute_url }}">{{ exam.titre }}</a>
+				{% else %}{{ exam.titre }}{% endif %}</td>
+			<td>{{ exam.ouverture }}</td>
+			<td>{{ exam.fermeture }}</td>
+		</tr>
+		{% empty %}
+		<tr><td colspan="3"3>{% trans "No exam available these days!" %}</td></tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock content %}
