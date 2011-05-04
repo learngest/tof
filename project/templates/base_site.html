@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block user_infos %}
-<p>{{ user.get_full_name }}</p>
+<p class="user">{{ user.get_full_name }}</p>
 <p><a class="logout" href="{% url email_auth.views.logout %}">{% trans "Logout" %}</a></p>
 {% endblock %}
 

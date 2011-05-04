@@ -295,6 +295,7 @@ hr {
 #header-toolbar form input[type=password] {
 	width: 110px;
 }
+#header-toolbar p.user,
 #header-toolbar a.user:link,
 #header-toolbar a.user:visited,
 #header-toolbar a.logout:link,
@@ -306,7 +307,7 @@ hr {
 	background: url(../img/cross.png) no-repeat 0 5px;
 	padding: 2px 0 2px 12px;
 }
-#header-toolbar a.user {
+#header-toolbar p.user, a.user {
 	background: url(../img/user.png) no-repeat 0 1px;
 	padding: 2px 0 2px 20px;
 	margin-right: 10px;
