@@ -64,7 +64,7 @@ class SessionExam(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return('testing.views.sessionexam', [str(self.id)])
+        return('users.views.session', [str(self.id)])
 
     def is_open(self):
         return(datetime.datetime.now() >= self.ouverture)
@@ -78,12 +78,52 @@ class Section(models.Model):
     titre = models.CharField(max_length=60, unique=True,
         help_text=_("Section title, required."))
     rang = models.IntegerField(_("rank"))
+    duree = models.IntegerField(null=True, blank=True,
+            help_text=_("Maximum duration, minutes."))
+    ouverture = models.DateTimeField(_("Opening date and time."),
+        blank=True, null=True,
+        help_text=_("Will use exam opening date if empty.."))
+    fermeture = models.DateTimeField(null=True, blank=True,
+            help_text=_("Closing date and time."))
+    retard_permis = models.BooleanField(
+            help_text=_("Passing deadline allowed ?"))
     
     class Meta:
         ordering = ['sessionexam','rang']
 
     def __unicode__(self):
         return u'%s - %s' % (self.sessionexam,self.titre)
+
+    def state(self):
+        """
+        Etat de la section indépendamment de l'utilisateur
+        0 disponible
+        3 fermée
+        4 pas encore ouverte
+        TODO voir comment utiliser duree vs fermeture
+        """
+        now = datetime.datetime.now()
+        if not (self.duree and self.fermeture):
+            self.fermeture = self.sessionexam.fermeture
+        if not self.ouverture:
+            self.ouverture = self.sessionexam.ouverture
+        if now < self.ouverture:
+            return 4
+        if self.fermeture:
+            if now > self.fermeture:
+                if retard_permis:
+                    return 2
+                else:
+                    return 3
+        return 0
+
+    def is_open(self):
+        """
+        Vrai si la section est ouverte : self.state = 0
+        """
+        if self.state() == 0:
+            return True
+        return False
 
 class Inscrit(models.Model):
     """
@@ -107,8 +147,6 @@ class Contenu(models.Model):
     section = models.ForeignKey(Section,
             help_text=_('Section, required.'))
     rang = models.IntegerField(_("rank"))
-    duree = models.IntegerField(
-            help_text=_("Maximum duration, minutes. 0 if unlimited."))
 
     class Meta:
         abstract = True

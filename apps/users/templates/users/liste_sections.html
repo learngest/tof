@@ -1,0 +1,27 @@
+{% extends "base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+<h2>{{ exam.titre }}</h2>
+<table class="tabexam">
+	<thead>
+		<tr><th>{% trans "Section" %}</th><th>{% trans "State" %}</th><th>{% trans "Additional Documents" %}</th></tr>
+	</thead>
+	<tfoot>
+	</tfoot>
+	<tbody>
+		{% for section in sections %}
+		<tr>
+			<td width="50%">{% if section.is_open %}
+				<a href="{{ section.get_absolute_url }}">{{ section.titre }}</a>
+				{% else %}{{ section.titre }}{% endif %}</td>
+			<td>{{ section.str_state }}</td>
+			<td></td>
+		</tr>
+		{% empty %}
+		<tr><td colspan="3">{% trans "Nothing available these days!" %}</td></tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock content %}
+
