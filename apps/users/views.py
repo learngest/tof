@@ -32,7 +32,9 @@ def dashboard_student(request):
     - liste des sessions d'examen auxquelles le User est inscrit avec choix
     - ou accès direct à la session s'il n'y en a qu'une
     """
-    sessions = [i.sessionexam for i in Inscrit.objects.filter(user=request.user)]
+    sessions = [i.sessionexam
+            for i in Inscrit.objects.filter(user=request.user)
+            if not i.sessionexam.hidden]
     if len(sessions)==1:
         return HttpResponseRedirect(sessions[0].sessionexam.get_absolute_url)
     return render_to_response('users/liste_sessions.html',{
@@ -48,7 +50,7 @@ def session(request, exam_id=None):
         request.user.message_set.create( message=_("Requested url is invalid."))
         return HttpResponseRedirect(LOGIN_REDIRECT_URL)
     try:
-        exam = SessionExam.objects.get(pk=exam_id)
+        exam = SessionExam.exams.get(pk=exam_id)
     except SessionExam.DoesNotExist:
         request.user.message_set.create( message=_("This exam does not exist."))
         return HttpResponseRedirect(LOGIN_REDIRECT_URL)

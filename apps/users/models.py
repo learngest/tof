@@ -37,6 +37,10 @@ class Client(models.Model):
     def __unicode__(self):
         return self.nom
 
+class ExamManager(models.Manager):
+    def get_query_set(self):
+        return super(ExamManager, self).get_query_set().filter(hidden=False)
+
 class SessionExam(models.Model):
     """
     Une session d'examen
@@ -55,7 +59,12 @@ class SessionExam(models.Model):
         default='fr',
         help_text=_(
         "Session language, required."))
+    hidden = models.BooleanField(
+        help_text=_("If checked, the exam will be hidden in all views."))
     
+    objects = models.Manager()
+    exams = ExamManager()
+
     class Meta:
         ordering = ['client','ouverture']
 
