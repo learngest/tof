@@ -1,6 +1,10 @@
 {% extends "base_site.html" %}
 {% load i18n %}
 
+{% block breadcrumbs %}<div class="breadcrumbs">
+    <a href="{% url users.views.dashboard %}">{% trans "Dashboard" %}</a> &gt; {{ exam.titre }}
+</div>{% endblock %}
+
 {% block content %}
 <h2>{{ exam.titre }}</h2>
 <table class="tabexam">
