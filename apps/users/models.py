@@ -47,6 +47,8 @@ class SessionExam(models.Model):
     """
     titre = models.CharField(max_length=60, unique=True,
         help_text=_("Session title, required."))
+    libel = models.TextField(null=True, blank=True,
+        help_text=_("Free field for exam presentation, instructions, ...)."))
     client = models.ForeignKey(Client, 
         help_text=_("Session customer, required."))
     ouverture = models.DateTimeField(_("Opening date and time."),
