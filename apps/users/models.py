@@ -157,6 +157,7 @@ class Contenu(models.Model):
     """
     section = models.ForeignKey(Section,
             help_text=_('Section, required.'))
+    granule = models.ForeignKey(Granule, help_text=_('Granule, required.'))
     rang = models.IntegerField(_("rank"))
 
     class Meta:
@@ -166,32 +167,28 @@ class ContenuStd(Contenu):
     """
     Contenu de test standard
     """
-    granule = models.ForeignKey(Granule, help_text=_('Granule, required.'))
     nbq = models.IntegerField(_("Number of questions"))
 
     class Meta:
         ordering = ['section','rang']
-        verbose_name_plural = _("Standard Contents")
+        verbose_name_plural = _("Section Contents : Tests")
 
     def __unicode__(self):
         return u'%s - %s' % (self.section, self.granule)
 
 class ContenuCas(Contenu):
     """
-    Contenu : cas à rendre
+    Contenu : cas
     """
-    titre = models.CharField(max_length=100)
     libel = models.TextField(_("Directions"),
             blank=True, null=True)
-    fichier = models.FileField(upload_to='assignments/%Y/%m/%d',
-            blank=True,null=True)
 
     class Meta:
         ordering = ['section','rang']
-        verbose_name_plural = _("Contents: Case Studies")
+        verbose_name_plural = _("Section Contents : Case Studies")
 
     def __unicode__(self):
-        return u'%s - %s' % (self.section,self.titre)
+        return u'%s - %s' % (self.section, self.granule)
 
 class ReponseStd(models.Model):
     """

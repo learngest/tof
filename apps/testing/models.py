@@ -2,6 +2,7 @@
 
 from django.db import models
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
 
 from listes import *
 
@@ -82,4 +83,39 @@ class Reponse(models.Model):
 
     def __unicode__(self):
         return self.valeur
+
+def upload_path(instance, filename):
+    import os.path
+    return os.path.join('cas', instance.granule.slug, filename)
+
+class EnonceCas(models.Model):
+    """
+    Un énoncé de cas (fichier)
+    """
+    granule = models.ForeignKey(Granule)
+    langue = models.CharField(max_length=5, choices=LANGUAGES)
+    titre = models.CharField(max_length=100)
+    fichier = models.FileField(upload_to=upload_path, max_length=255)
+
+    class Meta:
+        ordering = ['granule','langue']
+        verbose_name_plural = _("Case Studies")
+
+    def __unicode__(self):
+        return self.titre
+
+    def get_absolute_url(self):
+        return self.fichier.url
+
+class QuestionCas(models.Model):
+    """
+    Une question rattachée à un cas
+    """
+    enonce = models.ForeignKey(EnonceCas)
+    typq = models.CharField(max_length=3,
+            choices=LISTE_TYPQ, default='exa')
+    libel = models.TextField()
+
+    def __unicode__(self):
+        return self.libel
 

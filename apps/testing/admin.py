@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 from django.contrib import admin
-from testing.models import Granule, GranuleTitre, Enonce, Question, Reponse
+from testing.models import Granule, GranuleTitre, Enonce, Question, Reponse, EnonceCas, QuestionCas
 
 class GranuleAdmin(admin.ModelAdmin):
     ordering = ['slug'] 
@@ -26,6 +26,12 @@ class QuestionAdmin(admin.ModelAdmin):
     list_display = ('id','libel')
     list_filter = ('langue','granule')
 admin.site.register(Question, QuestionAdmin)
+
+class EnonceCasAdmin(admin.ModelAdmin):
+    search_fields = ['titre', 'fichier']
+    list_display = ['id', 'granule', 'langue', 'titre', 'fichier']
+    list_filter = ('langue','granule')
+admin.site.register(EnonceCas, EnonceCasAdmin)
 
 class ReponseAdmin(admin.ModelAdmin):
     list_display = ('id','question','points','valeur')
