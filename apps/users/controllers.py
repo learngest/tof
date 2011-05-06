@@ -2,6 +2,9 @@
 
 from django.utils.translation import ugettext_lazy as _
 
+from users.models import UserCas
+from testing.models import EnonceCas
+
 import datetime
 
 class UserExam(object):
@@ -64,3 +67,23 @@ class UserSection(object):
         if self.state() == 4:
             return _("Opening on %s") % self.ouverture
         return states[self.state()]
+
+    def cas(self):
+        """
+        Renvoie le lien vers un cas si disponible, False sinon
+        Le cas est celui que le User a dld précédemment si déjà fait,
+        tiré au hasard dans la granule sinon
+        """
+        if self.granule.typg == 'C':
+            try:
+                ucas = UserCas.objects.get(user=self.user, section=self.section)
+            except UserCas.DoesNotExist:
+                cas = EnonceCas.objects.filter(
+                        granule=self.granule, langue=self.langue).order_by('?')[0]
+                ucas = UserCas(user = self.user,
+                        section = self.section,
+                        cas = cas)
+                ucas.save()
+            return ucas.cas
+        else:
+            return None
