@@ -7,7 +7,9 @@
 
 {% block content %}
 <h2>{{ exam.titre }}</h2>
+{% if exam.libel %}
 <p class="colorbox">{{ exam.libel }}</p>
+{% endif %}
 <table class="tabexam">
 	<thead>
 		<tr><th>{% trans "Section" %}</th><th>{% trans "State" %}</th><th>{% trans "Additional Documents" %}</th></tr>
