@@ -20,14 +20,18 @@ class UserSection(object):
         self.user = user
         self.section = section
         self.titre = self.section.titre
+        self.libel = self.section.libel
+        self.granule = self.section.granule
+        self.langue = self.section.sessionexam.langue
+        self.nbq = self.section.nbq
         self.is_open = self.section.is_open()
         self._state = -1
         if self.section.ouverture:
             self.ouverture = self.section.ouverture
         else:
             self.ouverture = self.section.sessionexam.ouverture
-        self.retard_permis = self.section.retard_permis
         self.fermeture = self.section.fermeture
+        self.retard_permis = self.section.retard_permis
         self.duree = self.section.duree
 
     def state(self):

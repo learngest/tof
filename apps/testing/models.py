@@ -11,7 +11,14 @@ class Granule(models.Model):
     Une granule de test.
     Un module peut avoir une ou plusieurs granules de tests.
     """
+    TYPE_GRANULE = (
+            ('T', _('Test')),
+            ('C', _('Case Study with Questions')),
+            ('U', _('Case Study to Upload')),
+        )
     slug = models.SlugField()
+    typg = models.CharField(_("Type"), max_length=1,
+            choices = TYPE_GRANULE)
 
     class Meta:
         ordering = ['slug']

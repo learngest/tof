@@ -3,15 +3,16 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from users.models import Client, SessionExam, Section, Inscrit, ContenuStd, ContenuCas
+from users.models import Client, SessionExam, Section, Inscrit
 from testing.models import Granule
 
 class ClientAdmin(admin.ModelAdmin):
     search_fields = ('nom',)
 admin.site.register(Client, ClientAdmin)
 
-class SectionInline(admin.TabularInline):
+class SectionInline(admin.StackedInline):
     model = Section
+    exclude = ('libel','duree',)
 
 class SessionExamAdmin(admin.ModelAdmin):
     search_fields = ('titre',)
@@ -20,17 +21,11 @@ class SessionExamAdmin(admin.ModelAdmin):
     inlines = [SectionInline,]
 admin.site.register(SessionExam, SessionExamAdmin)
 
-class ContenuStdInline(admin.TabularInline):
-    model = ContenuStd
-
-class ContenuCasInline(admin.TabularInline):
-    model = ContenuCas
-
 class SectionAdmin(admin.ModelAdmin):
     search_fields = ('sessionexam',)
-    list_display = ('id','sessionexam','rang')
+    list_display = ('id','sessionexam','titre','rang')
     list_filter = ('sessionexam',)
-    inlines = [ContenuStdInline, ContenuCasInline]
+    ordering = ['sessionexam','rang']
 admin.site.register(Section, SectionAdmin)
 
 class InscritAdmin(admin.ModelAdmin):
@@ -39,11 +34,3 @@ class InscritAdmin(admin.ModelAdmin):
     ordering = ['sessionexam',]
 admin.site.register(Inscrit, InscritAdmin)   
 
-class ContenuStdAdmin(admin.ModelAdmin):
-    list_filter = ('section','granule',)
-admin.site.register(ContenuStd, ContenuStdAdmin)
-
-class ContenuCasAdmin(admin.ModelAdmin):
-    search_fields = ('titre', 'libel',)
-    list_filter = ('section',)
-admin.site.register(ContenuCas, ContenuCasAdmin)

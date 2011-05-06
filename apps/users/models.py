@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
 from email_auth.views import user_logged_in
-from testing.models import Granule, Question, Reponse
+from testing.models import Granule, Question, Reponse, EnonceCas
 
 from listes import *
 
@@ -87,17 +87,23 @@ class Section(models.Model):
     """
     sessionexam = models.ForeignKey(SessionExam,
             help_text=_('Session to which this section belongs, required.'))
-    titre = models.CharField(max_length=60, unique=True,
+    titre = models.CharField("Title", max_length=60, unique=True,
         help_text=_("Section title, required."))
-    rang = models.IntegerField(_("rank"))
-    duree = models.IntegerField(null=True, blank=True,
+    libel = models.TextField(_("Directions"), blank=True, null=True)
+    rang = models.IntegerField(_("Rank"),
+            help_text=_("Required."))
+    granule = models.ForeignKey(Granule, help_text=_('Granule, required.'))
+    nbq = models.IntegerField(_("# questions"), blank=True, null=True,
+            help_text=_("Number of questions, default 5, for tests only."))
+    duree = models.IntegerField(_("Duration"), null=True, blank=True,
             help_text=_("Maximum duration, minutes."))
     ouverture = models.DateTimeField(_("Opening date and time."),
         blank=True, null=True,
-        help_text=_("Will use exam opening date if empty.."))
-    fermeture = models.DateTimeField(null=True, blank=True,
-            help_text=_("Closing date and time."))
-    retard_permis = models.BooleanField(
+        help_text=_("Will use exam opening date if empty."))
+    fermeture = models.DateTimeField(_("Closing date and time"),
+            null=True, blank=True,
+            help_text=_("Will use exam closing date if empty."))
+    retard_permis = models.BooleanField(_("Late validation allowed"),
             help_text=_("Passing deadline allowed ?"))
     
     class Meta:
@@ -115,18 +121,15 @@ class Section(models.Model):
         TODO voir comment utiliser duree vs fermeture
         """
         now = datetime.datetime.now()
-        if not (self.duree and self.fermeture):
+        if not (self.duree or self.fermeture):
             self.fermeture = self.sessionexam.fermeture
         if not self.ouverture:
             self.ouverture = self.sessionexam.ouverture
         if now < self.ouverture:
             return 4
         if self.fermeture:
-            if now > self.fermeture:
-                if retard_permis:
-                    return 2
-                else:
-                    return 3
+            if now > self.fermeture and not self.retard_permis:
+                return 3
         return 0
 
     def is_open(self):
@@ -152,51 +155,26 @@ class Inscrit(models.Model):
     def __unicode__(self):
         return u'%s - %s' % (self.sessionexam,self.user)
 
-class Contenu(models.Model):
+class UserCas(models.Model):
     """
-    Classe abstraite pour tous les tests
+    Un cas téléchargé par un user dans une section
     """
-    section = models.ForeignKey(Section,
-            help_text=_('Section, required.'))
-    granule = models.ForeignKey(Granule, help_text=_('Granule, required.'))
-    rang = models.IntegerField(_("rank"))
+    user = models.ForeignKey(User,)
+    section = models.ForeignKey(Section,)
+    cas = models.ForeignKey(EnonceCas,)
 
     class Meta:
-        abstract = True
-
-class ContenuStd(Contenu):
-    """
-    Contenu de test standard
-    """
-    nbq = models.IntegerField(_("Number of questions"))
-
-    class Meta:
-        ordering = ['section','rang']
-        verbose_name_plural = _("Section Contents : Tests")
+        ordering = ['user',]
 
     def __unicode__(self):
-        return u'%s - %s' % (self.section, self.granule)
-
-class ContenuCas(Contenu):
-    """
-    Contenu : cas
-    """
-    libel = models.TextField(_("Directions"),
-            blank=True, null=True)
-
-    class Meta:
-        ordering = ['section','rang']
-        verbose_name_plural = _("Section Contents : Case Studies")
-
-    def __unicode__(self):
-        return u'%s - %s' % (self.section, self.granule)
+        return u'%s - %s' % (self.user.get_full_name(), self.cas.titre)
 
 class ReponseStd(models.Model):
     """
     Réponse à une question standard
     """
     user = models.ForeignKey(User)
-    contenu = models.ForeignKey(ContenuStd)
+    section = models.ForeignKey(Section)
     question = models.ForeignKey(Question)
     reponse = models.ForeignKey(Reponse, blank=True, null=True)
     texte = models.TextField(blank=True, null=True)
@@ -213,13 +191,13 @@ class ReponseCas(models.Model):
     Devoir rendu par un utilisateur
     """
     user = models.ForeignKey(User)
-    cas = models.ForeignKey(ContenuCas)
+    section = models.ForeignKey(Section)
     date = models.DateTimeField()
     fichier = models.FileField(upload_to=settings.WORKDONE_DIR)
     signature = models.CharField(max_length=54)
 
     class Meta:
-        unique_together = (('user', 'cas'),)
+        pass
 
     def __unicode__(self):
         return u'%s - %s - %s' % (self.utilisateur.email, 
