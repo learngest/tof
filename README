@@ -1,0 +1,11 @@
+Conditions d'ouverture des exams et sections
+--------------------------------------------
+
+Un examen "hidden" n'est jamais visible, sauf dans l'admin.
+
+Les dates d'ouverture et fermeture des examens conditionnent la visibilité de
+ceux-ci sur le tableau de bord étudiant. Un examen peut donc être "ouvert" avant
+les dates de test (pour récupérer un cas, par exemple), et fermé après les tests
+(pour afficher des résultats, par exemple).
+
+
