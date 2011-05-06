@@ -1,5 +1,12 @@
+==================
+Online Exam System
+==================
+
 Conditions d'ouverture des exams et sections
---------------------------------------------
+============================================
+
+Examens
+-------
 
 Un examen "hidden" n'est jamais visible, sauf dans l'admin.
 
@@ -8,4 +15,19 @@ ceux-ci sur le tableau de bord étudiant. Un examen peut donc être "ouvert" ava
 les dates de test (pour récupérer un cas, par exemple), et fermé après les tests
 (pour afficher des résultats, par exemple).
 
+Sections
+--------
 
+Une section peut avoir ses propres dates d'ouverture et de fermeture. Par défaut
+elle hérite de celles de l'examen dont elle fait partie.
+
+Les sections ont une méthode `is_open()` (dans le modèle), qui indique si la
+section est ouverte, indépendamment de la performance de l'utilisateur. Ainsi
+cette méthode renverra True même si l'utilisateur a validé la section.
+Une section reste ouverte après sa date de fermeture si le flag `retard_permis`
+est vrai.
+
+L'état final de la section (compte tenu de la performance de l'utilisateur) est
+calculé dans la classe `UserSection` dans le controller (TODO, a priori l'état
+1, "en cours", n'est pas pertinent car la section de test doit être validée en
+quittant). 
