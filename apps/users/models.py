@@ -78,7 +78,8 @@ class SessionExam(models.Model):
         return('users.views.session', [str(self.id)])
 
     def is_open(self):
-        return(datetime.datetime.now() >= self.ouverture)
+        now = datetime.datetime.now()
+        return((now >= self.ouverture) and (now <= self.fermeture))
 
 class Section(models.Model):
     """
